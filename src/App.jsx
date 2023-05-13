@@ -1,37 +1,37 @@
-import styled from "styled-components";
-
 import "./App.css";
 
-const Box = styled.div`
-  width: 400px;
-  height: 400px;
+import axios from "axios";
 
-  background: aliceblue;
+import { useState, useEffect } from "react";
 
-  border: 2px solid red;
-  border-radius: 10px;
-
-  p {
-    font-size: 20px;
-    font-weight: bold;
-
-    color: blueviolet;
-  }
-`;
-
-const PStyle = styled.p`
-  font-size: 20px;
-
-  color: purple;
-`;
+import { Box } from "./App.style";
 
 export function App() {
-  const txt = "Hello World!";
+  const [person, setPerson] = useState({
+    name: {
+      first: "???",
+    },
+  });
+
+  useEffect(() => {
+    handleGet();
+  });
+
+  async function handleGet() {
+    const data = await axios.get("https://randomuser.me/api/?nat=BR&female");
+    setPerson(data.data.results[0]);
+
+    //console.log(data);
+
+    //console.log(data.data.results[0].name.firts);
+    console.log(person);
+  }
 
   return (
     <Box>
-      <PStyle>Hello World!!!</PStyle>
-      <p>{txt}</p>
+      <button onClick={handleGet}>Request</button>
+      <p>Nome: </p>
+      <p> {person.name.first}</p>
     </Box>
   );
 }
